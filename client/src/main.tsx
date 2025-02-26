@@ -8,6 +8,7 @@ import Home from "./pages/Home.tsx";
 import Login from "./pages/Login.tsx";
 import { Toaster } from "@/components/ui/sonner";
 import ProtectedRoute from "./components/ProtectedRoute.tsx";
+import SingleProduct from "./pages/SingleProduct.tsx";
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/product/:id",
+        element: <SingleProduct/>
       },
     ],
   },

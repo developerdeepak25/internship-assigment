@@ -42,7 +42,11 @@ export default function Login() {
       console.log(auth);
       toast.success(res.data.message);
       navigate("/admin");
-    } catch (error) {
+    } catch (error:any) {
+      console.log(error.response)
+      if (error.response.data.message) {
+        toast.error(error.response.data.message);
+      }
       console.log(error);
     } finally {
       setIsLoading(false);
