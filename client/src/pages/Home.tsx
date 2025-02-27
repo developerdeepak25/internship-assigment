@@ -11,15 +11,22 @@ const Home = () => {
   const {
     auth: { isAuthenticated },
   } = useStore();
-  const [products, setProducts] = useState<any>();
+  const [products, setProducts] = useState<any>([]);
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   async function getProducts() {
-    const res = await axiosInstance.get("/products");
-    console.log(res.data.products);
-    setProducts(res.data.products);
+    try {
+      const res = await axiosInstance.get("/products");
+      setProducts(res.data.products);
+    } catch (error) {
+      toast.error("Failed to fetch products");
+    } finally {
+      setIsLoading(false);
+    }
   }
+
   useEffect(() => {
     getProducts();
   }, []);
@@ -43,9 +50,27 @@ const Home = () => {
     }
   };
 
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-[70vh]">
+        <div className="text-xl text-gray-600">Loading products...</div>
+      </div>
+    );
+  }
+
+  if (products.length === 0) {
+    return (
+      <div className="flex justify-center items-center h-[70vh]">
+        <h2 className="text-2xl font-semibold text-gray-600">
+          No products available
+        </h2>
+      </div>
+    );
+  }
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4">
-      {products?.map((product) => (
+      {products.map((product) => (
         <>
           <Card key={product._id} className="p-4 shadow-md rounded-lg">
             <CardContent className="flex flex-col items-end">
