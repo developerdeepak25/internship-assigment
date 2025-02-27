@@ -52,16 +52,20 @@ const Admin = () => {
         return toast.error("failed to create product");
       }
       toast.success("Product created successfully");
-    //   setFormData({
-    //     name: "",
-    //     price: 0,
-    //     category: "",
-    //     inStock: false,
-    //     image: null,
-    //   });
-    } catch (error) {
-      toast.error("Error creating product");
+      setFormData({
+        name: "",
+        price: 0,
+        category: "",
+        inStock: false,
+        image: null,
+      });
+    } catch (error: any) {
       console.log(error);
+      console.log(error.response.status);
+      if (error.response.status === 401 && error.response.data.message) {
+        return toast.error(error.response.data.message);
+      }
+      toast.error("Error creating product");
     }
   };
 

@@ -58,6 +58,10 @@ router.post("/", upload.single("image"), async (req, res) => {
     if (!name || !price || !category || !inStock) {
       return res.status(401).json({ message: "all fields are required" });
     }
+
+    if(!req.file) {
+      return res.status(401).json({ message: "image is required" });
+    }
     const product = await Product.create({
       name,
       price,
